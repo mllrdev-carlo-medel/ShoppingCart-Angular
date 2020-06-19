@@ -1,0 +1,56 @@
+form {
+  margin: auto;
+  border-radius: 5px;
+  background-color: #434644;
+  padding: 10px;
+  width: 60%;
+}
+
+label {
+  color: white;
+}
+
+.left-left {
+  width: 30%;
+  float: left;
+  text-align: right;
+}
+.left-right {
+  width: 60%;
+  margin-left: 10px;
+  float:left;
+}
+
+.right-left {
+  width: 10%;
+  float: left;
+  text-align: right;
+}
+.right-right {
+  width: 60%;
+  margin-left: 10px;
+  float:left;
+}
+
+.div-parent {
+  display: flex;
+  margin-top: 15px;
+}
+
+.div-left {
+  width: 50%;
+}
+.div-right {
+  width: 50%;
+}
+
+.left-button {
+  width: 45%;
+  float: left;
+}
+
+.right-button {
+  width: 45%;
+  margin-left: 10px;
+  float:left;
+}
