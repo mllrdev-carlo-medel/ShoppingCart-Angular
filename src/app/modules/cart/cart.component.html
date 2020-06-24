@@ -1,0 +1,38 @@
+<h3>Items in Cart</h3>
+<div class="div-parent">
+  <div class="div-left">
+    <table>
+      <tr *ngFor="let item of purchaseDetails">
+        <td colspan="5">
+          <app-cart-item [purchaseDetail]="item" (loadData)="loadData()"></app-cart-item>
+        </td>
+      </tr>
+        <tr *ngIf="!purchaseDetails || !purchaseDetails.length">
+          <td colspan="5" (click)="addItems()">
+            <form>
+              <h3>Shop now!</h3>
+            </form>
+          </td>
+        </tr>
+    </table>
+    <br/>
+  </div>
+  <div class="div-right">
+    <form>
+      <button (click)="profile()">Go back to Profile</button>
+      <button (click)="addItems()">Add Items</button>
+      <button (click)="removeAll()">Remove All</button>
+      <button (click)="checkout()">Checkout</button>
+      <div class="div-parent">
+        <div class="div-form-left">
+          <label>Grand Total:</label>
+        </div>
+        <div class="div-form-right">
+          <label class="label-total">Php {{ grandTotal }}</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="modal-container" class="hidden"></div>
+<div id="overlay" class="hidden"></div>

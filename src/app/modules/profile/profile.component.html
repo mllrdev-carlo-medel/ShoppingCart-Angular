@@ -1,0 +1,44 @@
+<br/>
+<form>
+<div class="div-parent">
+    <div class="div-left">
+      <label class="left-left"> Name:</label>
+      <input class="left-right" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.FirstName"/>
+      <br/>
+      <br/>
+      <label class="left-left">Middle Name:</label>
+      <input class="left-right" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.MiddleName"/>
+      <br/>
+      <br/>
+      <label class="left-left">Last Name:</label>
+      <input class="left-right" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.LastName"/>
+      <br/>
+      <br/>
+      <label class="left-left">Address:</label>
+      <input class="left-right" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.Address"/>
+      </div>
+      <div class="div-right">
+      <label class="right-left" >Gender</label>
+      <div class="right-right">
+        <label>Male</label>
+        <input type="radio" value="male" id="male" name=gender [(ngModel)]="customer.Info.Gender">
+        <label>Female</label>
+        <input type="radio" value="female" id="female" name="gender" [(ngModel)]="customer.Info.Gender">
+      </div>
+      <br/>
+      <br/>
+      <label class="right-left">Phone</label>
+      <input class="right-right"type="text" [ngModelOptions]="{standalone: true}" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.ContactNo"/>
+      <br/>
+      <br/>
+      <label class="right-left">Email:</label>
+      <input class="right-right" type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Info.Email"/>
+      <br/>
+      <br/>
+     <h1 class="right-left"></h1>
+     <button class="right-right" (click)="update()">Update</button>
+    </div>
+  </div>
+</form>
+<app-purchase-history [purchases]="purchases"></app-purchase-history>
+<br/>

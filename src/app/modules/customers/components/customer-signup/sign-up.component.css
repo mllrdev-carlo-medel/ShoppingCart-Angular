@@ -1,0 +1,46 @@
+form {
+  margin: 10px 10px;
+  background-color: white;
+}
+select {
+  width: 100%;
+  padding: 5px 5px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input {
+  width: 100%;
+  padding: 5px 5px;
+  margin: 5px 0px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.div-parent {
+  display: flex;
+}
+
+.div-left {
+  width: 20%;
+  text-align: left;
+}
+.div-right {
+  width: 40%;
+  margin: 0px 0px;
+  display: inline-flex;
+}
+
+button {
+  width: 100%;
+  color: white;
+  background-color: #2f312f;
+  border-radius: 5px;
+  padding: 6px;
+  margin-top: 5px;
+}

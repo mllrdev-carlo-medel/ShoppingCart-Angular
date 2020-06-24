@@ -1,0 +1,131 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  padding: 5px;
+}
+tr:hover {background-color: #ddd;}
+th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: #444d44;
+  color: white;
+}
+
+input {
+  width: 100%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+h3 {
+  text-align: center;
+  color: white;
+}
+
+h4 {
+  color: white;
+  margin: auto;
+  text-align: center;
+}
+button {
+  width: 100%;
+  margin: 5px 0px;
+}
+
+form {
+  margin: auto;
+  border-radius: 5px;
+  background-color: #434644;
+  padding: 10px;
+  width: 90%;
+}
+
+label {
+  color: white;
+  text-align: left;
+}
+
+.label-total {
+  color: white;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.left {
+  width: 15%;
+  float: left;
+  text-align: right;
+}
+.right {
+  width: 80%;
+  margin-left: 10px;
+  float:left;
+}
+
+.div-parent {
+  display: flex;
+  margin-top: 5px;
+}
+
+.div-left {
+  width: 70%;
+}
+.div-right {
+  width: 30%;
+  margin: 0px 10px;
+}
+
+.div-form-left {
+  width: 30%;
+}
+
+.div-form-right {
+  width: 70%;
+  margin: 0px 10px;
+}
+
+.left-button {
+  width: 45%;
+  float: left;
+}
+
+.right-button {
+  width: 45%;
+  margin-left: 10px;
+  float:left;
+}
+
+.hidden{
+  display:none;
+}
+.show{
+  display:block;
+}
+
+#modal-container {
+  position:  fixed;
+  top: 300px;
+  left: 50%;
+  width: 375px;
+  background: #434644;
+  margin-left: -187.5px;
+  text-align: center;
+  box-shadow: 0px 0px 2px 1px black;
+  z-index: 100;
+}
+
+#overlay {
+  position: absolute;
+  top: 0px;
+  left:  0px;
+  z-index:  99;
+  background:  rgba(0,0,0,0.8);
+  width:  100%;
+  height: 100%;
+}
+

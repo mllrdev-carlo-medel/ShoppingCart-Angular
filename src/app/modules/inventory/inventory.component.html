@@ -1,0 +1,30 @@
+<h3>Items</h3>
+<div class="div-parent">
+  Filter: <app-filter-textbox (changed)="filter($event)" [filter]="searchString" class="div-left"></app-filter-textbox>
+  <button class="div-right" (click)="addItem()">Add Item</button>
+</div>
+<br/>
+<table>
+    <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stocks</th>
+         </tr>
+    </thead>
+    <tr *ngFor="let item of filteredItems" (dblclick)="openItem(item)"
+        [ngClass]="{'highlight' : item === selectedItem}">
+      <td>{{ item.Id }}</td>
+      <td>{{ item.Name }}</td>
+      <td>{{ item.Price }}</td>
+      <td>{{ item.Stocks }}</td>
+    </tr>
+    <tr *ngIf="!items || !items.length">
+        <td colspan="6">No items!</td>
+    </tr>
+</table>
+<br/>
+<div id='modal-container' class="hidden"></div>
+<div id="overlay" class="hidden"></div>
+

@@ -1,0 +1,19 @@
+<form>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.FirstName" placeholder="FirstName*"/>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.MiddleName" placeholder="MiddleName"/>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.LastName" placeholder="LastName*"/>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Address" placeholder="Address*"/>
+    <div class="div-parent">
+      <label class="div-left" >Gender</label>
+      <div class="div-right">
+        <label>Male</label>
+        <input type="radio" value="male" id="male" name=gender [(ngModel)]="customer.Gender">
+        <label for="female">Female</label>
+        <input type="radio" value="female" id="female" name="gender" [(ngModel)]="customer.Gender">
+      </div>
+    </div>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.ContactNo" placeholder="Contact No"/>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Email" placeholder="Email Address"/>
+    <button (click)="signUp()">Sign Up</button>
+    <button (click)="close()">Close</button>
+</form>

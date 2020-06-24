@@ -1,0 +1,29 @@
+<h3>{{ title }}</h3>
+<form>
+  <div class="div-parent">
+    <div class="div-form-left">
+      <label>Name</label>
+      <br/>
+      <br/>
+      <label>Price</label>
+      <br/>
+      <br/>
+      <label>Stocks</label>
+    </div>
+    <div class="div-form-right">
+      <input type="text" [value]="item.Name" (input)="item.Name=$event.target.value"/>
+      <br/>
+      <br/>
+      <input type="text" [value]="item.Price" (input)="item.Price=$event.target.value"/>
+      <br/>
+      <br/>
+      <input type="text" [value]="item.Stocks" (input)="item.Stocks=$event.target.value"/>
+      <br/>
+      <br/>
+      <button (click)="action(item)">{{ buttonName }}</button>
+      <br/>
+      <button (click)="close()">Close</button>
+    </div>
+  </div>
+</form>
+

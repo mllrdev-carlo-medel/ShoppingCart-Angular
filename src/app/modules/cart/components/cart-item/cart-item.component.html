@@ -1,0 +1,21 @@
+<form>
+  <div>
+    <h3>{{ purchaseDetail.Name | titlecase }}</h3>
+  </div>
+  <div>
+    <label>Price:</label>
+    <label>Php{{ purchaseDetail.PurchaseItem.Price }}</label>
+  </div>
+  <div>
+    <label class="left-margin">Quantity:</label>
+    <br/>
+    <input [ngModelOptions]="{standalone: true}" type="number" min="1" [max]="stocks"
+           [(ngModel)]="purchaseDetail.PurchaseItem.Quantity" (change)="update()">
+  </div>
+  <div>
+    <label class="left-margin">SubTotal:</label>
+    <br/>
+    <label>Php{{ purchaseDetail.PurchaseItem.SubTotal }}</label>
+  </div>
+  <button (click)="remove()">Remove</button>
+</form>

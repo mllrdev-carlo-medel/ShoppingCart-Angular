@@ -5,12 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ServiceModule } from './services/service.module';
-import { CustomersModule } from './customers/customers.module';
-import { ProfileModule } from './profile/profile.module';
-import { CartModule } from './cart/cart.module';
-import { ItemsModule } from './items/items.module';
-import { InventoryModule } from './inventory/inventory.module';
-import { PurchaseHistoryModule } from './purchase-history/purchase-history.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { CartModule } from './modules/cart/cart.module';
+import { ItemsModule } from './modules/items/items.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
+import { PurchaseHistoryModule } from './modules/purchase-history/purchase-history.module';
+import { CheckoutModule } from './modules/checkout/checkout.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PurchaseHistoryModule } from './purchase-history/purchase-history.modul
     CartModule,
     ItemsModule,
     InventoryModule,
-    PurchaseHistoryModule
+    PurchaseHistoryModule,
+    CheckoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

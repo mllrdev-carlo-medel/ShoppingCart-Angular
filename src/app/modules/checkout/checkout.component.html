@@ -1,0 +1,25 @@
+<h3>Review Items</h3>
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Subtotal</th>
+  </thead>
+  <tr *ngFor="let item of purchaseDetails">
+    <td>{{ item.Name }}</td>
+    <td>{{ item.PurchaseItem.Price }}</td>
+    <td>{{ item.PurchaseItem.Quantity }}</td>
+    <td>{{ item.PurchaseItem.SubTotal }}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td><label>Total (Php):</label></td>
+    <td>{{ this.grandTotal }}</td>
+  </tr>
+</table>
+<br/>
+
+<button class="button-left" (click)="viewCart()">View Cart</button>
+<button class="button-right" (click)="placeOrder()">Place Order</button>
