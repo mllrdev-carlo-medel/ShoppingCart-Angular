@@ -4,18 +4,18 @@
   </div>
   <div>
     <label>Price:</label>
-    <label>Php{{ purchaseDetail.PurchaseItem.Price }}</label>
+    <label>{{ purchaseDetail.PurchaseItem.Price | currency: 'Php'}}</label>
   </div>
   <div>
     <label class="left-margin">Quantity:</label>
     <br/>
-    <input [ngModelOptions]="{standalone: true}" type="number" min="1" [max]="stocks"
-           [(ngModel)]="purchaseDetail.PurchaseItem.Quantity" (change)="update()">
+    <input type="number" min="1" [max]="stocks + 1"
+           [value]="purchaseDetail.PurchaseItem.Quantity" (change)="update($event.target.value)">
   </div>
   <div>
     <label class="left-margin">SubTotal:</label>
     <br/>
-    <label>Php{{ purchaseDetail.PurchaseItem.SubTotal }}</label>
+    <label>{{ purchaseDetail.PurchaseItem.SubTotal | currency: 'Php' }}</label>
   </div>
   <button (click)="remove()">Remove</button>
 </form>

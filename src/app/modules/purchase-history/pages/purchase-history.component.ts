@@ -22,11 +22,11 @@ export class PurchaseHistoryComponent implements OnInit {
               private sorterService: SorterService,
               private router: Router) { }
 
-  ngOnInit() {
-    this.purchaseService.getAll().subscribe((purchases: Purchase[] ) => {
+  async ngOnInit() {
+    await this.purchaseService.getAll().then((purchases: Purchase[]) => {
       this.sorterService.sort(purchases, 'Date');
       purchases.forEach(purchase => {
-        this.customerService.getById(purchase.CustomerId).subscribe((customer: Customer) => {
+        this.customerService.getById(purchase.CustomerId).then((customer: Customer) => {
           const name = customer.FirstName + ' ' + customer.MiddleName + ' ' + customer.LastName;
           const record = new Purchases(name, purchase);
           this.purchases.push(record);
@@ -37,6 +37,6 @@ export class PurchaseHistoryComponent implements OnInit {
 
   openProfile(purchase: Purchases) {
     this.selectedPurchase = purchase;
-    this.router.navigate(['profile/' + purchase.Purchase.CustomerId]);
+    this.router.navigate([`profile/${purchase.Purchase.CustomerId}`]);
   }
 }

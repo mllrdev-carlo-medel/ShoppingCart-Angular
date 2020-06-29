@@ -30,12 +30,12 @@ export class ItemsComponent implements OnInit {
     this.getItems();
   }
 
-  getItems() {
-    this.itemService.getAll().subscribe(items => {
+  async getItems() {
+    await this.itemService.getAll().then(async items => {
       this.items = this.filteredItems = items;
       const conditionPurchaseItem = new PurchaseItem();
       conditionPurchaseItem.PurchaseId = this.purchaseId;
-      this.purchaseItemService.find(conditionPurchaseItem).subscribe((purchaseItems: PurchaseItem[]) => {
+      await this.purchaseItemService.find(conditionPurchaseItem).then((purchaseItems: PurchaseItem[]) => {
         this.items = [];
 
         items.forEach(item => {
@@ -44,10 +44,10 @@ export class ItemsComponent implements OnInit {
             this.items.push(item);
           }
         });
-
-        this.filteredItems = this.items;
       });
     });
+
+    this.filteredItems = this.items;
   }
 
   filter(data: string) {
@@ -72,14 +72,14 @@ export class ItemsComponent implements OnInit {
   addToCart() {
     this.searchString = '';
     if (this.selectedItems.length > 0) {
-      this.selectedItems.forEach(item => {
+      this.selectedItems.forEach(async item => {
         const purchaseItem = new PurchaseItem();
         purchaseItem.PurchaseId = this.purchaseId;
         purchaseItem.ItemId = item.Id;
         purchaseItem.Price = item.Price;
         purchaseItem.Quantity = 1;
         purchaseItem.SubTotal = item.Price;
-        this.purchaseItemService.add(purchaseItem).subscribe((id: number) => {
+        await this.purchaseItemService.add(purchaseItem).then((id: number) => {
 
           if (id > 0) {
             this.selectedItems = [];
@@ -87,7 +87,14 @@ export class ItemsComponent implements OnInit {
           }
 
           item.Stocks -= 1;
-          this.itemService.update(item).subscribe();
+        }).catch(error => {
+          console.log(error);
+          alert('Can\'t add item');
+        });
+
+        await this.itemService.update(item).then().catch(error => {
+          console.log(error);
+          alert('Can\'t add item');
         });
       });
     }
@@ -97,6 +104,6 @@ export class ItemsComponent implements OnInit {
   }
 
   viewCart() {
-    this.router.navigate(['cart/' + this.purchaseId + '/' + this.route.snapshot.paramMap.get('profileId')]);
+    this.router.navigate([`cart/${this.purchaseId}/${this.route.snapshot.paramMap.get('profileId')}`]);
   }
 }

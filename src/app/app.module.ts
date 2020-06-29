@@ -12,12 +12,14 @@ import { ItemsModule } from './modules/items/items.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { PurchaseHistoryModule } from './modules/purchase-history/purchase-history.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     SharedModule,

@@ -24,7 +24,7 @@ export class InventoryComponent implements OnInit {
   }
 
   getItems() {
-    this.itemService.getAll().subscribe(items => this.items = this.filteredItems = items);
+    this.itemService.getAll().then(items => this.filteredItems = this.items = items);
     this.newItem.Name = null;
     this.newItem.Price = null;
     this.newItem.Stocks = null;

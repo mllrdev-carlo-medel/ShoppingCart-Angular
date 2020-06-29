@@ -21,37 +21,38 @@ export class ProfileComponent implements OnInit {
               private customerService: CustomerService,
               private purchaseService: PurchaseService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const conditionPurchase = new Purchase();
-    this.customerService.getById(+this.route.snapshot.paramMap.get('id')).pipe(
-      map((customer: Customer) => {
+    await this.customerService.getById(+this.route.snapshot.paramMap.get('id')).then(customer => {
 
-        if (customer) {
-          this.customer = new CustomerDetails(customer);
-          conditionPurchase.CustomerId = customer.Id;
-        }
-        else {
-          alert ('Can\'t find customer details');
-        }
+      if (customer) {
+       this.customer = new CustomerDetails(customer);
+       conditionPurchase.CustomerId = customer.Id;
+      }
+      else {
+        alert ('Can\'t find customer details');
+      }
+    }).catch(error => {
+      console.log(error);
+      alert ('Can\'t find customer details');
+    });
 
-        return customer;
-      }),
-      mergeMap(customer =>
-        this.purchaseService.find(conditionPurchase))
-    ).subscribe((purchases: Purchase[]) => {
+    this.purchaseService.find(conditionPurchase).then(purchases => {
       this.purchases = purchases;
+    }).catch(error => {
+      console.log(error);
     });
   }
 
-  update() {
-    this.customerService.update(this.customer.Info).subscribe(resp => {
+  async update() {
+    await this.customerService.update(this.customer.Info).then(resp => {
 
       if (resp.ok) {
         alert('Successfully updated profile');
       }
       else {
         alert('Can\'t update profile right now');
-        this.customerService.getById(+this.route.snapshot.paramMap.get('id')).subscribe(customer => {
+        this.customerService.getById(+this.route.snapshot.paramMap.get('id')).then(customer => {
         this.customer = new CustomerDetails(customer);
         });
       }

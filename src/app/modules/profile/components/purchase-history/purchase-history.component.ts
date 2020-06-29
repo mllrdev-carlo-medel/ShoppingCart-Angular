@@ -13,6 +13,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
 import {ProfileStringConstants } from 'src/app/shared/constants/profile-string-constants';
 import { SorterService } from 'src/app/services/sorter-service';
+import { ItemsDialogBoxComponent } from './items-dialogbox/items-dialogbox.component';
+import { ModalService } from 'src/app/services/modal-services/modal-service';
 
 @Component({
   selector: 'app-purchase-history',
@@ -42,30 +44,32 @@ export class PurchaseHistoryComponent implements OnInit {
               private itemService: ItemService,
               private sorterService: SorterService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private modalService: ModalService) { }
 
   ngOnInit() {}
   generateHistory() {
     this.purchaseHistory = [];
 
-    this.purchases.forEach(purchase => {
+    this.purchases.forEach(async purchase => {
       const purchaseHistory = new PurchaseHistory(purchase);
       const conditionPurchaseItem = new PurchaseItem();
       conditionPurchaseItem.PurchaseId = purchase.Id;
+      let purchaseItems = [];
+      await this.purchaseItemService.find(conditionPurchaseItem).then((data: PurchaseItem[]) => {
+        purchaseItems = data;
+      });
 
-      this.purchaseItemService.find(conditionPurchaseItem).subscribe((purchaseItems: PurchaseItem[]) => {
+      purchaseItems.forEach(async purchaseItem => {
+        await this.itemService.getById(purchaseItem.ItemId).then (async item => {
 
-        purchaseItems.forEach(purchaseItem => {
-          this.itemService.getById(purchaseItem.ItemId).subscribe (item => {
+          if (purchase.Status === ProfileStringConstants.PENDING) {
+            purchaseItem.Price = item.Price;
+            purchaseItem.SubTotal = purchaseItem.Quantity  * item.Price;
+            await this.purchaseItemService.update(purchaseItem).then();
+          }
 
-            if (purchase.Status === ProfileStringConstants.PENDING) {
-              purchaseItem.Price = item.Price;
-              purchaseItem.SubTotal = purchaseItem.Quantity  * item.Price;
-              this.purchaseItemService.update(purchaseItem).subscribe();
-            }
-
-            purchaseHistory.PurchaseDetails.push(new PurchaseDetails(purchaseItem, item));
-          });
+          purchaseHistory.PurchaseDetails.push(new PurchaseDetails(purchaseItem, item));
         });
       });
 
@@ -73,37 +77,46 @@ export class PurchaseHistoryComponent implements OnInit {
     });
   }
 
-  showItems(id: number) {
+  getPurchase(id: number) {
     this.purchaseId = id;
     const purchase = this.purchaseHistory.find(x => x.Purchase.Id === id);
     this.purchaseDetails = purchase.PurchaseDetails;
   }
 
-  deletePurchase() {
+  showItems(id: number) {
+    const purchase = this.purchaseHistory.find(x => x.Purchase.Id === id);
+    const inputs = {
+      purchaseDetails: purchase.PurchaseDetails
+    };
+
+    this.modalService.init(ItemsDialogBoxComponent, inputs, {});
+  }
+
+  async deletePurchase() {
     if (this.purchaseId > 0) {
       const purchaseItemDel = new PurchaseItem();
       purchaseItemDel.PurchaseId = this.purchaseId;
       const purchaseDel = new Purchase();
       purchaseDel.Id = this.purchaseId;
 
-      this.purchaseService.getById(this.purchaseId).subscribe(purchase => {
+      await this.purchaseService.getById(this.purchaseId).then(async purchase => {
 
         if (purchase.Status === ProfileStringConstants.PENDING) {
-          this.purchaseItemService.find(purchaseItemDel).subscribe (purchaseItems => {
+          await this.purchaseItemService.find(purchaseItemDel).then (purchaseItems => {
 
             purchaseItems.forEach(purchsaeItem => {
-                this.itemService.getById(purchsaeItem.ItemId).subscribe(item => {
+                this.itemService.getById(purchsaeItem.ItemId).then(item => {
                 item.Stocks += purchsaeItem.Quantity;
-                this.itemService.update(item).subscribe();
+                this.itemService.update(item).then();
               });
             });
           });
         }
 
-        this.purchaseItemService.delete([purchaseItemDel]).subscribe(response => {
+        await this.purchaseItemService.delete([purchaseItemDel]).then(async response => {
 
           if (response.ok) {
-            this.purchaseService.delete([purchaseDel]).subscribe(innerResponse => {
+            await this.purchaseService.delete([purchaseDel]).then(innerResponse => {
 
               if (innerResponse.ok) {
                 const index = this.purchases.indexOf(this.purchases.find(x => x.Id === this.purchaseId));
@@ -129,11 +142,11 @@ export class PurchaseHistoryComponent implements OnInit {
     const purchasePending = this.purchases.find(x => x.Status === ProfileStringConstants.PENDING);
 
     if (purchasePending) {
-      this.router.navigate(['cart/' + purchasePending.Id + '/' + purchase.CustomerId]);
+      this.router.navigate([`cart/${purchasePending.Id}/${purchase.CustomerId}`]);
     }
     else {
-      this.purchaseService.add(purchase).subscribe((id: number) => {
-        this.router.navigate(['cart/' + id + '/' + purchase.CustomerId]);
+      this.purchaseService.add(purchase).then((id: number) => {
+        this.router.navigate([`cart/${id}/${purchase.CustomerId}`]);
       });
     }
   }

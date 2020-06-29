@@ -1,10 +1,14 @@
 <form>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.FirstName" placeholder="FirstName*"/>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.MiddleName" placeholder="MiddleName"/>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.LastName" placeholder="LastName*"/>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Address" placeholder="Address*"/>
+    <label class="label">First Name*</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.FirstName"/>
+    <label class="label">Middle Name</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.MiddleName"/>
+    <label class="label">Last Name*</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.LastName"/>
+    <label class="label">Address*</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Address"/>
     <div class="div-parent">
-      <label class="div-left" >Gender</label>
+      <label class="div-left" >Gender:</label>
       <div class="div-right">
         <label>Male</label>
         <input type="radio" value="male" id="male" name=gender [(ngModel)]="customer.Gender">
@@ -12,8 +16,11 @@
         <input type="radio" value="female" id="female" name="gender" [(ngModel)]="customer.Gender">
       </div>
     </div>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.ContactNo" placeholder="Contact No"/>
-    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Email" placeholder="Email Address"/>
+    <br/>
+    <label class="label">Contact No</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.ContactNo"/>
+    <label class="label">Email</label>
+    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="customer.Email"/>
     <button (click)="signUp()">Sign Up</button>
     <button (click)="close()">Close</button>
 </form>

@@ -37,13 +37,13 @@ export class CustomerListComponent implements OnInit {
     if (data) {
       if (this.searchAddress) {
         this.filteredCustomers = this.filteredAddress.filter((cust: Customer) => {
-            const customerName = cust.FirstName + ' ' + cust.LastName;
+            const customerName = `${cust.FirstName} ${cust.LastName}`;
             return customerName.toLowerCase().indexOf(data.toLowerCase()) > -1;
         });
       }
       else {
         this.filteredCustomers = this.filteredName = this.customers.filter((cust: Customer) => {
-            const customerName = cust.FirstName + ' ' + cust.LastName;
+            const customerName = `${cust.FirstName} ${cust.LastName}`;
             return customerName.toLowerCase().indexOf(data.toLowerCase()) > -1;
         });
       }
@@ -81,6 +81,6 @@ export class CustomerListComponent implements OnInit {
   }
 
   openProfile(customer: Customer) {
-    this.router.navigate(['profile/' + customer.Id]);
+    this.router.navigate([`profile/${customer.Id}`]);
   }
 }

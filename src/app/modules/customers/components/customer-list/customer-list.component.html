@@ -1,7 +1,11 @@
 
-Filter Name: <app-filter-textbox (changed)="filterName($event)">  </app-filter-textbox>
-Filter Address: <app-filter-textbox (changed)="filterAddress($event)"> </app-filter-textbox>
+Name: <app-filter-textbox (changed)="filterName($event)">  </app-filter-textbox>
+Address: <app-filter-textbox (changed)="filterAddress($event)"> </app-filter-textbox>
 <br/>
+<br/>
+<label *ngIf="customers && customers.length > 0">
+  Total Number of Customers: {{ customers.length }}
+</label>
 <br/>
 <table>
   <thead>
@@ -21,9 +25,6 @@ Filter Address: <app-filter-textbox (changed)="filterAddress($event)"> </app-fil
       <td> {{ customer.Address }}</td>
   </tr>
   <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
-      <td colspan="3">No customers found</td>
-  </tr>
-  <tr *ngIf="customers && customers.length > 0">
-    <td colspan="3">Total Number of Customers: {{ customers.length }}</td>
-  </tr>
+    <td colspan="3">No customers found</td>
+</tr>
 </table>

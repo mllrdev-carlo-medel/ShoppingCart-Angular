@@ -4,7 +4,7 @@
     <table>
       <tr *ngFor="let item of purchaseDetails">
         <td colspan="5">
-          <app-cart-item [purchaseDetail]="item" (loadData)="loadData()"></app-cart-item>
+          <app-cart-item [purchaseDetail]="item" (loadData)="computeTotal()" (delete)="deleteItem($event)"></app-cart-item>
         </td>
       </tr>
         <tr *ngIf="!purchaseDetails || !purchaseDetails.length">
@@ -28,7 +28,7 @@
           <label>Grand Total:</label>
         </div>
         <div class="div-form-right">
-          <label class="label-total">Php {{ grandTotal }}</label>
+          <label class="label-total">{{ grandTotal | currency: 'Php' }}</label>
         </div>
       </div>
     </form>

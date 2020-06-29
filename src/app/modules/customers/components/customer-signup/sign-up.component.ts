@@ -25,12 +25,16 @@ export class SignUpComponent implements OnInit {
     this.modalService.destroy();
   }
 
-  signUp() {
-    if (this.customer.FirstName && this.customer.LastName && this.customer.Address &&
-        this.customer.Gender && this.customer.ContactNo && this.customer.Email) {
-        this.customerService.add(this.customer).subscribe ((id: number) => {
-        this.router.navigate(['profile/' + id]);
-      });
+   async signUp() {
+    if (this.customer.FirstName && this.customer.LastName && this.customer.Address) {
+      if (!this.customer.FirstName.trim() || !this.customer.LastName.trim() || !this.customer.Address.trim()) {
+        alert ('All fields with \'*\' must be filled up.');
+      }
+      else {
+        await this.customerService.add(this.customer).then ((id: number) => {
+          this.router.navigate([`profile/${id}`]);
+        });
+      }
     }
     else {
       alert ('All fields with \'*\' must be filled up.');

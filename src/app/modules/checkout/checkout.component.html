@@ -8,18 +8,18 @@
   </thead>
   <tr *ngFor="let item of purchaseDetails">
     <td>{{ item.Name }}</td>
-    <td>{{ item.PurchaseItem.Price }}</td>
-    <td>{{ item.PurchaseItem.Quantity }}</td>
-    <td>{{ item.PurchaseItem.SubTotal }}</td>
+    <td>{{ item.PurchaseItem.Price | currency: 'Php'}}</td>
+    <td>{{ item.PurchaseItem.Quantity}}</td>
+    <td>{{ item.PurchaseItem.SubTotal | currency: 'Php' }}</td>
   </tr>
   <tr>
     <td></td>
     <td></td>
-    <td><label>Total (Php):</label></td>
-    <td>{{ this.grandTotal }}</td>
+    <td><label>Total:</label></td>
+    <td>{{ this.grandTotal | currency: 'Php'}}</td>
   </tr>
 </table>
 <br/>
 
-<button class="button-left" (click)="viewCart()">View Cart</button>
+<button class="button-left" (click)="viewCart()">Edit Cart</button>
 <button class="button-right" (click)="placeOrder()">Place Order</button>

@@ -27,9 +27,9 @@ export class InventoryDialogBoxComponent implements OnInit {
     this.modalService.destroy();
   }
 
-  public action(item: Item) {
+  public async action(item: Item) {
     if (this.buttonName === ButtonStringConstants.UPDATE) {
-      this.itemService.update(item).subscribe(status => {
+      await this.itemService.update(item).then(status => {
 
         if (!status.ok) {
           alert ('Can not update at moment. Please try again.');
@@ -37,7 +37,7 @@ export class InventoryDialogBoxComponent implements OnInit {
       });
     }
     else {
-      this.itemService.add(item).subscribe(id => {
+      await this.itemService.add(item).then(id => {
 
         if (id <= 0) {
             alert('Can\'t add item. Please try again.');

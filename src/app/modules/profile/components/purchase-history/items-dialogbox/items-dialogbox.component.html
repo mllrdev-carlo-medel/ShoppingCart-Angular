@@ -1,0 +1,23 @@
+<div style="overflow-y: scroll;">
+<table>
+  <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tr *ngFor="let purchaseDetail of purchaseDetails">
+    <td>{{ purchaseDetail.PurchaseItem.ItemId }}</td>
+    <td>{{ purchaseDetail.Name }}</td>
+    <td>{{ purchaseDetail.PurchaseItem.Price }}</td>
+    <td>{{ purchaseDetail.PurchaseItem.Quantity }}</td>
+    <td>{{ purchaseDetail.PurchaseItem.SubTotal }}</td>
+  </tr>
+</table>
+</div>
+<br/>
+<button (click)="close()">Close</button>
+<br/>

@@ -35,47 +35,60 @@ export class CheckoutComponent implements OnInit {
     this.grandTotal = +total.toFixed(2);
   }
 
-  loadData() {
+  async loadData() {
     this.purchaseDetails = [];
+    let purchaseItems = [];
     const conditionPurchaseItem = new PurchaseItem();
     conditionPurchaseItem.PurchaseId = +this.route.snapshot.paramMap.get('id');
-    this.purchaseItemService.find(conditionPurchaseItem).subscribe((purchaseItems: PurchaseItem[]) => {
+    await this.purchaseItemService.find(conditionPurchaseItem).then((value: PurchaseItem[]) => {
+      purchaseItems = value;
+    });
 
-      purchaseItems.forEach(purchaseItem => {
-        this.itemService.getById(purchaseItem.ItemId).subscribe (item => {
+    purchaseItems.forEach(async purchaseItem => {
+      await this.itemService.getById(purchaseItem.ItemId).then (item => {
         this.purchaseDetails.push(new PurchaseDetails(purchaseItem, item));
         this.computeTotal();
-        });
       });
     });
   }
 
   viewCart() {
-    this.router.navigate(['cart/' + this.route.snapshot.paramMap.get('id') + '/' + this.route.snapshot.paramMap.get('profileId')]);
+    this.router.navigate([`cart/${this.route.snapshot.paramMap.get('id')}/'${this.route.snapshot.paramMap.get('profileId')}`]);
   }
 
   profile() {
-    this.router.navigate(['profile/' + +this.route.snapshot.paramMap.get('profileId')]);
+    this.router.navigate([`profile/${+this.route.snapshot.paramMap.get('profileId')}`]);
   }
 
-  placeOrder() {
+  async placeOrder() {
     this.computeTotal();
+
     if (this.grandTotal > 0) {
-      this.purchaseService.getById(+this.route.snapshot.paramMap.get('id')).subscribe((purchase: Purchase) => {
-        purchase.Status = ProfileStringConstants.PURCHASED;
-        purchase.Date = formatDate(new Date(), 'MM/dd/yyyy HH:mm:ss', 'en-US');
-        purchase.Total = this.grandTotal;
+      let purchase;
+      await this.purchaseService.getById(+this.route.snapshot.paramMap.get('id')).then((data: Purchase) => {
+        purchase = data;
+      }).catch(error => {
+        console.log(error);
+        alert('Can\'t proceed. Please try again');
+        return;
+      });
 
-        this.purchaseService.update(purchase).subscribe(resp => {
+      purchase.Status = ProfileStringConstants.PURCHASED;
+      purchase.Date = formatDate(new Date(), 'MM/dd/yyyy HH:mm:ss', 'en-US');
+      purchase.Total = this.grandTotal;
 
-          if (resp.ok) {
-            alert('Thank you. Please come again.');
-            this.profile();
-          }
-          else {
-            alert('Can\'t proceed at the moment. Please try again');
-          }
-        });
+      await this.purchaseService.update(purchase).then(resp => {
+
+        if (resp.ok) {
+          alert('Thank you. Please come again.');
+          this.profile();
+        }
+        else {
+          alert('Can\'t proceed at the moment. Please try again');
+        }
+      }).catch(error => {
+          console.log(error);
+          alert('Can\'t proceed. Please try again');
       });
     }
     else {

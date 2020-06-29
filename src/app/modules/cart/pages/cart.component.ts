@@ -6,6 +6,7 @@ import { ItemService } from 'src/app/services/http-service/item.service';
 import { PurchaseItem } from 'src/app/entities/PurchaseItem';
 import { Item } from 'src/app/entities/Item';
 import { SorterService } from 'src/app/services/sorter-service';
+import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'app-cart',
@@ -18,6 +19,8 @@ export class CartComponent implements OnInit {
   grandTotal = 0;
   items: Item[] = [];
 
+  deletedPurchaseItems: PurchaseItem[] = [];
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private purchaseItemService: PurchaseItemService,
@@ -25,24 +28,56 @@ export class CartComponent implements OnInit {
               private itemService: ItemService) { }
 
   ngOnInit(): void {
-    this.loadData();
+    this.getData();
   }
 
-  loadData() {
+  async getData() {
     this.purchaseDetails = [];
+    let purchaseItems = [];
     const conditionPurchaseItem = new PurchaseItem();
     conditionPurchaseItem.PurchaseId = +this.route.snapshot.paramMap.get('id');
-    this.purchaseItemService.find(conditionPurchaseItem).subscribe((purchaseItems: PurchaseItem[]) => {
-      purchaseItems.forEach(purchaseItem => {
-        this.itemService.getById(purchaseItem.ItemId).subscribe (item => {
-        this.purchaseDetails.push(new PurchaseDetails(purchaseItem, item));
-        this.sorterService.sort(this.purchaseDetails, 'Name');
-        this.computeTotal();
-        });
+    await this.purchaseItemService.find(conditionPurchaseItem).then((data: PurchaseItem[]) => {
+      purchaseItems = data;
+    });
+
+    purchaseItems.forEach(async purchaseItem => {
+      await this.itemService.getById(purchaseItem.ItemId).then (item => {
+      this.purchaseDetails.push(new PurchaseDetails(purchaseItem, item));
+      this.sorterService.sort(this.purchaseDetails, 'Name');
+      this.computeTotal();
       });
     });
 
-    this.itemService.getAll().subscribe(items => this.items = items);
+    await this.itemService.getAll().then(items => {
+      this.items = items;
+    }).catch(err => console.log(err));
+  }
+
+  async saveData() {
+    await this.purchaseItemService.delete(this.deletedPurchaseItems).then(status => {
+      if (!status.ok) {
+        console.log ('can\'t delete item');
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+
+    this.purchaseDetails.forEach(async (purchaseDetail: PurchaseDetails) => {
+      await this.purchaseItemService.update(purchaseDetail.PurchaseItem).then(status => {
+
+        if (!status.ok) {
+          console.log ('can\'t update item');
+          alert ('Can\'t update. Please try again.');
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  }
+
+  deleteItem(purchaseDetail: PurchaseDetails) {
+    this.deletedPurchaseItems.push(purchaseDetail.PurchaseItem);
+    this.purchaseDetails.splice(this.purchaseDetails.indexOf(purchaseDetail), 1);
   }
 
   computeTotal() {
@@ -51,33 +86,42 @@ export class CartComponent implements OnInit {
     this.grandTotal = +total.toFixed(2);
   }
 
-  checkout() {
-    this.router.navigate(['checkout/' + +this.route.snapshot.paramMap.get('id') + '/' +
-                         +this.route.snapshot.paramMap.get('profileId')]);
+  async checkout() {
+    await this.saveData();
+    this.router.navigate([`checkout/${+this.route.snapshot.paramMap.get('id')}/${+this.route.snapshot.paramMap.get('profileId')}`]);
   }
 
-  removeAll() {
+  async removeAll() {
     const purchaseItems = new Array<PurchaseItem>();
-    this.purchaseDetails.forEach(purchaseDetail => {
-     purchaseItems.push(purchaseDetail.PurchaseItem);
-    });
+    if (this.purchaseDetails.length > 0) {
+      this.purchaseDetails.forEach(purchaseDetail => {
+        purchaseItems.push(purchaseDetail.PurchaseItem);
+      });
 
-    this.purchaseItemService.delete(purchaseItems).subscribe(status => {
-      if (status.ok) {
-        this.loadData();
-      }
-      else {
-        alert('Can\'t delete. Please try agagin');
-      }
-    });
+      await this.purchaseItemService.delete(purchaseItems).then(status => {
+        if (status.ok) {
+          this.getData();
+        }
+        else {
+          alert('Can\'t delete. Please try agagin');
+        }
+      }).catch(error => {
+        console.log(error);
+        alert('Can\'t remove all items');
+      });
+    }
+    else {
+      alert ('No items in cart.');
+    }
   }
 
-  addItems() {
-    this.router.navigate(['items/' + +this.route.snapshot.paramMap.get('id') + '/' +
-                         +this.route.snapshot.paramMap.get('profileId')]);
+  async addItems() {
+    await this.saveData();
+    this.router.navigate([`items/${+this.route.snapshot.paramMap.get('id')}/${+this.route.snapshot.paramMap.get('profileId')}`]);
   }
 
-  profile() {
-    this.router.navigate(['profile/' + +this.route.snapshot.paramMap.get('profileId')]);
+  async profile() {
+    await this.saveData();
+    this.router.navigate([`profile/${+this.route.snapshot.paramMap.get('profileId')}`]);
   }
 }

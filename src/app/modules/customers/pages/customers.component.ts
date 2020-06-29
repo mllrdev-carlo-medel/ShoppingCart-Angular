@@ -21,23 +21,22 @@ export class CustomersComponent implements OnInit {
               private customerService: CustomerService,
               private router: Router) { }
 
-  ngOnInit(): void {
-    this.customerService.getAll().subscribe((customers: Customer[]) => this.customers = customers);
+  async ngOnInit() {
+    await this.customerService.getAll().then((customers: Customer[]) => this.customers = customers);
   }
 
-  logIn() {
+  async logIn() {
     if (this.id) {
-      this.customerService.getById(+this.id).subscribe((customer: Customer) => {
+      await this.customerService.getById(+this.id).then((customer: Customer) => {
 
         if (customer) {
-          this.router.navigate(['profile/' + this.id]);
+          this.router.navigate([`profile/${this.id}`]);
         }
         else {
           alert('Can\'t find customer');
         }
-      },
-
-      (error) => {
+      }).catch(error => {
+        console.log(error);
         alert('Can\'t find customer');
       });
     }

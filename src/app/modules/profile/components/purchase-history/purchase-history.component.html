@@ -1,7 +1,7 @@
 <br/>
 <form>
   <div class="div-parent">
-      <button class="left-button" (click)="deletePurchase()">Delete</button>
+      <button class="left-button" (click)="deletePurchase()">Delete Purchase</button>
       <button class="right-button" (click)="newPurchase()">New Purchase</button>
   </div>
 </form>
@@ -16,7 +16,7 @@
           <th>Total</th>
       </tr>
   </thead>
-  <tr *ngFor="let purchase of purchaseHistory" (click)="showItems(purchase.Purchase.Id)"
+  <tr *ngFor="let purchase of purchaseHistory" (click)="getPurchase(purchase.Purchase.Id)" (dblclick)="showItems(purchase.Purchase.Id)"
       [ngClass]="{'highlight' : purchase.Purchase.Id === purchaseId}">
       <td>{{ purchase.Purchase.Id }}</td>
       <td>{{ purchase.Purchase.CustomerId }}</td>
@@ -28,23 +28,7 @@
       <td colspan="5">No purchase history found</td>
   </tr>
 </table>
-<h3>Items</h3>
-<table>
-  <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Subtotal</th>
-    </tr>
-</thead>
-  <tr *ngFor="let purchaseDetail of purchaseDetails">
-    <td>{{ purchaseDetail.PurchaseItem.Id }}</td>
-    <td>{{ purchaseDetail.Name }}</td>
-    <td>{{ purchaseDetail.PurchaseItem.Price }}</td>
-    <td>{{ purchaseDetail.PurchaseItem.Quantity }}</td>
-    <td>{{ purchaseDetail.PurchaseItem.SubTotal }}</td>
-  </tr>
-</table>
 <br/>
+<div id='modal-container' class="hidden"></div>
+<div id="overlay" class="hidden"></div>
+
