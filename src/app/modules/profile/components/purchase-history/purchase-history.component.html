@@ -1,0 +1,34 @@
+<br/>
+<form>
+  <div class="div-parent">
+      <button class="left-button" (click)="deletePurchase()">Delete Purchase</button>
+      <button class="right-button" (click)="newPurchase()">New Purchase</button>
+  </div>
+</form>
+<h3>History</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Customer Id</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Total</th>
+      </tr>
+  </thead>
+  <tr *ngFor="let purchase of purchaseHistory" (click)="getPurchase(purchase.Purchase.Id)" (dblclick)="showItems(purchase.Purchase.Id)"
+      [ngClass]="{'highlight' : purchase.Purchase.Id === purchaseId}">
+      <td>{{ purchase.Purchase.Id }}</td>
+      <td>{{ purchase.Purchase.CustomerId }}</td>
+      <td>{{ purchase.Purchase.Status }}</td>
+      <td>{{ purchase.Purchase.Date }}</td>
+      <td>{{ purchase.Purchase.Total }}</td>
+  </tr>
+  <tr *ngIf="!purchaseHistory || !purchaseHistory.length">
+      <td colspan="5">No purchase history found</td>
+  </tr>
+</table>
+<br/>
+<div id='modal-container' class="hidden"></div>
+<div id="overlay" class="hidden"></div>
+

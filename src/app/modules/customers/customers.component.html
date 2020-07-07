@@ -1,0 +1,12 @@
+<h2>{{ title }}</h2>
+<div class="div-form">
+  <form>
+    <input type="text" [(ngModel)]="id"  [ngModelOptions]="{standalone: true}" placeholder="Enter Customer ID"/>
+    <button (click)="logIn()" class="button-login">Confirm</button>
+    <button (click)="signUp()" class="button-signup">Sign Up</button>
+  </form>
+</div>
+<br/>
+<app-customers-list [customers]="customers"></app-customers-list>
+<div id='modal-container' class="hidden"></div>
+<div id="overlay" class="hidden"></div>

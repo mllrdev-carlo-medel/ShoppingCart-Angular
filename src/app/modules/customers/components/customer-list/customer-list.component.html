@@ -1,0 +1,30 @@
+
+Name: <app-filter-textbox (changed)="filterName($event)">  </app-filter-textbox>
+Address: <app-filter-textbox (changed)="filterAddress($event)"> </app-filter-textbox>
+<br/>
+<br/>
+<label *ngIf="customers && customers.length > 0">
+  Total Number of Customers: {{ customers.length }}
+</label>
+<br/>
+<table>
+  <thead>
+      <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Address</th>
+      </tr>
+  </thead>
+  <tr *ngFor="let customer of filteredCustomers" (dblclick)="openProfile(customer)">
+      <td>{{ customer.Id }}</td>
+      <td>
+          <a>
+            {{ customer.FirstName | titlecase }} {{ customer.MiddleName | titlecase }} {{ customer.LastName | titlecase }}
+          </a>
+      </td>
+      <td> {{ customer.Address }}</td>
+  </tr>
+  <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
+    <td colspan="3">No customers found</td>
+</tr>
+</table>
